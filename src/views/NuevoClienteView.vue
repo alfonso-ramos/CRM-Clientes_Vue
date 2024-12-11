@@ -1,7 +1,11 @@
 <script setup>
   import { FormKit } from '@formkit/vue'
+  import { useRouter} from 'vue-router'
+  import ClienteService from '@/services/ClienteService';
   import RouterLink from "../components/UI/RouterLink.vue";
   import Heading from "../components/UI/Heading.vue"
+
+  const router = useRouter()
 
   defineProps({
       title: {
@@ -9,9 +13,14 @@
       }
   })
 
-
   const handleSubmit = (data) => {
-    console.log(data)
+    data.estado = 1
+    ClienteService.agregarCliente(data)
+      .then(res => {
+        router.push({name: 'listado-clientes'})
+      })
+      .catch(error => console.log(error))
+  
   }
 
 </script>
@@ -19,7 +28,7 @@
 <template>
   <div>
     <div class="flex justify-end">
-      <RouterLink to="inicio">
+      <RouterLink to="listado-clientes">
         Volver
       </RouterLink>
     </div>
